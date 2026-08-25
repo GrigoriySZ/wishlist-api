@@ -11,7 +11,7 @@ class User(Base):
 
     # Связи
     wishlists: Mapped[list['Wishlist']] = relationship('Wishlist', back_populates='user')
-    booked_items: Mapped[list['Item']] = relationship('Item', back_populates='')
+    booked_items: Mapped[list['Item']] = relationship('Item', back_populates='user')
 
 
 class Wishlist(Base):
@@ -37,4 +37,4 @@ class Item(Base):
 
     # Связи
     user: Mapped['User'] = relationship('User', back_populates='booked_items')
-    wishlist: Mapped['Wishlist'] = relationship('Wishlist', back_populates='wishlist_items')
+    wishlist: Mapped['Wishlist'] = relationship('Wishlist', back_populates='wishlist_items', lazy='selectin')

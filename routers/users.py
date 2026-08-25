@@ -9,7 +9,10 @@ from typing import List
 router = APIRouter(prefix='/users', tags=['Управление пользователями'])
 
 # POST /users
-@router.post('/', response_model=UserRead, status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=UserRead, 
+             status_code=status.HTTP_201_CREATED,
+             summary='Создает нового пользователя',
+             description='Создает новый объект User и возвращает с присвоенным id')
 async def create_user(username: str, db: AsyncSession = Depends(get_db)) -> User:
     query = select(User).where(User.username == username)
     result = await db.execute(query)
@@ -29,7 +32,9 @@ async def create_user(username: str, db: AsyncSession = Depends(get_db)) -> User
     return new_user
 
 # GET /users
-@router.get('/', response_model=List[UserRead])
+@router.get('/', response_model=List[UserRead],
+            summary='Возвращает список всех пользователей',
+            description='Возвращает список всех объектов User')
 async def list_users(db: AsyncSession = Depends(get_db)):
     users = await db.execute(select(User))
     
