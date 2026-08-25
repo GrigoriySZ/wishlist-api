@@ -23,8 +23,9 @@ class ItemCreate(BaseModel):
 
 class ItemRead(BaseModel):
     id: int
+    wishlist_id: int
     title: str
-    print: Optional[int]
+    price: Optional[int]
     is_booked: bool
     booked_by_user_id: Optional[int]
 
@@ -41,6 +42,6 @@ class WishlistRead(BaseModel):
     id: int
     title: str
     user_id: int
-    items: List[ItemRead] = []
+    wishlist_items: List[ItemRead] = []
 
     model_config = ConfigDict(from_attributes=True)

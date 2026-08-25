@@ -10,7 +10,10 @@ from models import Wishlist, User
 router = APIRouter(prefix='/wishlists', tags=['Управление списками подарков'])
 
 # POST /wishlists
-@router.post('/', response_model=WishlistCreate, status_code=status.HTTP_201_CREATED)
+@router.post('/', response_model=WishlistCreate, 
+             status_code=status.HTTP_201_CREATED,
+             summary='Создать список пожеланий',
+             description='Создает новый объект Wishlist и возвращает его с присвоенным ID')
 async def create_new_wishlist(wishlist_data: WishlistCreate, 
                               db: AsyncSession = Depends(get_db)) -> Wishlist:
     query = select(User).where(User.id == wishlist_data.user_id)
@@ -33,7 +36,11 @@ async def create_new_wishlist(wishlist_data: WishlistCreate,
     return new_wishlist
 
 # GET /wishlists/{wishlist_id}
-@router.get('/{wishlist_id}', response_model=WishlistRead)
+@router.get('/{wishlist_id}', 
+            response_model=WishlistRead,
+            summary='Поиск вишлиста по ID',
+            description='Производит поиск объектов Wishlist по ID и ' \
+                'возвращаем вместе со списком связанных объектов Item')
 async def get_wishlist_by_id(wishlist_id: int, db: AsyncSession = Depends(get_db)):
     query = select(Wishlist).options(
         selectinload(Wishlist.wishlist_items)).filter(Wishlist.id == wishlist_id)

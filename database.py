@@ -7,7 +7,7 @@ DATABASE_URL = f'sqlite+aiosqlite:///{os.path.join(os.path.dirname(__file__), "w
 
 engine = create_async_engine(
     DATABASE_URL,
-    echo=True,
+    echo=False,
     connect_args={"check_same_thread": False}
 )
 
@@ -24,7 +24,6 @@ async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with AsyncSessionLocal() as session:
         try:
             yield session
-            await session.commit()
         except Exception:
             await session.rollback()
             raise
